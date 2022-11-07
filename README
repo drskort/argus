@@ -1,0 +1,7 @@
+# Argus
+
+A neat discord bot for my private discord guild.
+Argus can say hello to newcomers, roll dice and manage role reactions.
+
+Argus can be set up using the bot.ini file in the src folder and needs a token that has to be specified
+using the environment variable "DISCORD_TOKEN".
