@@ -1,0 +1,4 @@
+PyNaCl
+python-dotenv
+pycparser
+discord.py
