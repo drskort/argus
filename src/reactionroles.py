@@ -5,18 +5,20 @@ import json
 from discord.ext import commands
 from discord.utils import get
 
+
 class ReactionRoles(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
         # Parse config
         config = configparser.ConfigParser()
-        with codecs.open('bot.ini', 'r', encoding='utf-8-sig') as f:
+        with codecs.open('../bot.ini', 'r', encoding='utf-8-sig') as f:
             config.read_file(f)
         self.roles = json.loads(config["ReactionRoles"]["roles"])
         self.reactions = json.loads(config["ReactionRoles"]["reactions"])
         self.admin_role = config["ReactionRoles"]["admin_role"]
         self.config = config
+        self.msg = None
         if "role_message_id" in config["ReactionRoles"]:
             self.role_message_id = int(config["ReactionRoles"]["role_message_id"])
         else:
@@ -34,7 +36,7 @@ class ReactionRoles(commands.Cog):
         self.msg = await ctx.send(txt)
         # Update config and id
         self.config["ReactionRoles"]["role_message_id"] = str(self.msg.id)
-        with codecs.open('bot.ini', 'w', encoding='utf-8-sig') as f:
+        with codecs.open('../bot.ini', 'w', encoding='utf-8-sig') as f:
             self.config.write(f)
         self.role_message_id = self.msg.id
         # React to the message
@@ -48,7 +50,7 @@ class ReactionRoles(commands.Cog):
             return
         self.roles.append(role_name)
         self.config["ReactionRoles"]["roles"] = json.dumps(self.roles)
-        with codecs.open('bot.ini', 'w', encoding='utf-8-sig') as f:
+        with codecs.open('../bot.ini', 'w', encoding='utf-8-sig') as f:
             self.config.write(f)
         await ctx.send(f"Role '{role_name}' was successfully added")
 
@@ -59,10 +61,9 @@ class ReactionRoles(commands.Cog):
             return
         self.roles.remove(role_name)
         self.config["ReactionRoles"]["roles"] = json.dumps(self.roles)
-        with codecs.open('bot.ini', 'w', encoding='utf-8-sig') as f:
+        with codecs.open('../bot.ini', 'w', encoding='utf-8-sig') as f:
             self.config.write(f)
         await ctx.send(f"Role '{role_name}' was successfully removed")
-
 
     # Checks whether author has the required role
     async def check_admin(self, ctx):
